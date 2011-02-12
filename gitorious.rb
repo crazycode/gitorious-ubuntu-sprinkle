@@ -42,8 +42,15 @@ package :stomp do
   verify { has_gem 'stomp', '1.1' }
 end
 
+package :hoe do
+  gem :hoe
+  version '2.8'
+  verify { has_gem 'hoe', '2.8.0' }
+end
+
+
 package :gitorious_dependencies do
-  gems = [:chronic, :daemons, :hoe, :echoe, :'ruby-yadis', :'ruby-openid',
+  gems = [:chronic, :daemons, :echoe, :'ruby-yadis', :'ruby-openid',
     :'mime-types', :'diff-lcs', :json, :'ruby-hmac', :stompserver, :mysql]
 
   gems.each do |gem_name|
@@ -52,6 +59,7 @@ package :gitorious_dependencies do
       #http_proxy 'http://proxy.intra.bt.com:8080'
     end
   end
+  requires :hoe
   requires :rdiscount
   requires :stomp
 
@@ -195,6 +203,7 @@ package :git_user do
   noop do
     post :install, 'adduser --system --home /var/www/gitorious/ --no-create-home --group --shell /bin/bash git'
     post :install, 'chown -R git:git /var/www/gitorious'
+    post :install, 'chmod g-w /var/www/gitorious'
   end
 
   verify {file_contains '/etc/passwd', 'git'}
