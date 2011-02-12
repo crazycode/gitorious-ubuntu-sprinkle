@@ -29,7 +29,7 @@ end
 package :geoip do
   apt 'geoip-bin libgeoip1 libgeoip-dev'
   gem 'geoip' do
-    http_proxy 'http://proxy.intra.bt.com:8080'
+    # http_proxy 'http://proxy.intra.bt.com:8080'
   end
   verify do
     has_gem 'geoip'
@@ -57,18 +57,19 @@ package :passenger do
   requires :rubygems
 
   gem 'passenger' do
-    http_proxy 'http://proxy.intra.bt.com:8080'
+    # http_proxy 'http://proxy.intra.bt.com:8080'
     post :install, '/var/lib/gems/1.8/bin/passenger-install-apache2-module --auto'
   end
+  version '3.0.2'
 
   verify do
-    has_file '/var/lib/gems/1.8/gems/passenger-3.0.0/ext/apache2/mod_passenger.so'
+    has_file '/var/lib/gems/1.8/gems/passenger-3.0.2/ext/apache2/mod_passenger.so'
   end
 end
 
 package :passenger_config do
-  passenger_config = "LoadModule passenger_module /var/lib/gems/1.8/gems/passenger-3.0.0/ext/apache2/mod_passenger.so
-PassengerRoot /var/lib/gems/1.8/gems/passenger-3.0.0
+  passenger_config = "LoadModule passenger_module /var/lib/gems/1.8/gems/passenger-3.0.2/ext/apache2/mod_passenger.so
+PassengerRoot /var/lib/gems/1.8/gems/passenger-3.0.2
 PassengerRuby /usr/bin/ruby"
   push_text passenger_config, '/etc/apache2/sites-available/passenger', :sudo => true do
     post :install, "ln -s /etc/apache2/sites-available/passenger /etc/apache2/sites-enabled/001-passenger"

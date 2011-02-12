@@ -28,7 +28,7 @@ end
 
 package :rdiscount do
   gem :rdiscount do
-    http_proxy 'http://proxy.intra.bt.com:8080'
+    #http_proxy 'http://proxy.intra.bt.com:8080'
   end
   version '1.3.1.1'
   verify { has_gem 'rdiscount', '1.3.1.1' }
@@ -36,7 +36,7 @@ end
 
 package :stomp do
   gem :stomp do
-    http_proxy 'http://proxy.intra.bt.com:8080'
+    #http_proxy 'http://proxy.intra.bt.com:8080'
   end
   version '1.1'
   verify { has_gem 'stomp', '1.1' }
@@ -49,7 +49,7 @@ package :gitorious_dependencies do
   gems.each do |gem_name|
     puts "installing #{gem_name}"
     gem gem_name do
-      http_proxy 'http://proxy.intra.bt.com:8080'
+      #http_proxy 'http://proxy.intra.bt.com:8080'
     end
   end
   requires :rdiscount
@@ -64,7 +64,7 @@ end
 
 package :rack do
   gem :rack do
-    http_proxy 'http://proxy.intra.bt.com:8080'
+    #http_proxy 'http://proxy.intra.bt.com:8080'
   end
   version '1.0.1'
   verify { has_gem 'rack', '1.0.1' }
@@ -74,8 +74,8 @@ package :gitorious do
   requires :rack
   requires :gitorious_dependencies
   gem 'mysql' do
-    http_proxy 'http://proxy.intra.bt.com:8080'
-    pre :install, 'bash -c "export http_proxy=http://proxy.intra.bt.com:8080 && wget http://gitorious.org/gitorious/mainline/archive-tarball/master -O /tmp/gitorious.tar.gz"'
+    #http_proxy 'http://proxy.intra.bt.com:8080'
+    pre :install, 'bash -c "wget http://gitorious.org/gitorious/mainline/archive-tarball/master -O /tmp/gitorious.tar.gz"'
     pre :install, 'tar xfz /tmp/gitorious.tar.gz -C /var/www'
     pre :install, 'mv /var/www/gitorious-mainline /var/www/gitorious'
     # this next line should work, but http git clone is flakey on gitorious, so using the above tar file instead
@@ -233,7 +233,7 @@ package :apache_config do
   noop do
     post :install, 'ln -s /etc/apache2/sites-available/gitorious /etc/apache2/sites-enabled/002-gitorious'
     post :install, 'rm /etc/apache2/sites-enabled/000-default'
-    post :install, 'apachectl restart'
+    post :install, 'apache2ctl restart'
   end
   verify {has_file '/etc/apache2/sites-enabled/002-gitorious'}
 end
