@@ -1,8 +1,8 @@
 #! /bin/sh
 ### BEGIN INIT INFO
 # Provides:          Gitorious GIT-Daemon
-# Required-Start:    
-# Required-Stop:     
+# Required-Start:
+# Required-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: GIT-Daemon server daemon
@@ -10,13 +10,13 @@
 ### END INIT INFO
 
 # Author: Fabio Akita <fabioakita@gmail.com>
- 
+
 RETVAL=0
 PROG="git-daemon"
-GIT_DAEMON="/usr/bin/ruby /var/www/gitorious/script/git-daemon -d"
+GIT_DAEMON="/usr/bin/ruby /app/gitorious/script/git-daemon -d"
 LOCK_FILE=/var/lock/git-daemon
-PID_FILE=/var/www/gitorious/log/git-daemon.pid
- 
+PID_FILE=/app/gitorious/log/git-daemon.pid
+
 do_check_pid() {
   if [ -f $PID_FILE ]; then
     PID=`cat $PID_FILE`
@@ -26,9 +26,9 @@ do_check_pid() {
     RUNNING=0
   fi
 }
- 
+
 runlevel=`runlevel | awk '{print $2}'`
- 
+
 start()
 {
   do_check_pid
@@ -50,7 +50,7 @@ start()
   [ "$RETVAL" = 0 ] && touch $LOCK_FILE
   echo
 }
- 
+
 stop()
 {
   do_check_pid
@@ -71,7 +71,7 @@ stop()
   [ "$RETVAL" = 0 ] && rm -f $LOCK_FILE && rm -f $PID_FILE
   echo
 }
- 
+
 case "$1" in
   start)
     start

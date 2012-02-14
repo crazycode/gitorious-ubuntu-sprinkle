@@ -1,11 +1,11 @@
 <VirtualHost *:80>
  ServerName git.nat.bt.com
- DocumentRoot /var/www/gitorious/public
+ DocumentRoot /app/gitorious/public
 </VirtualHost>
 
 <IfModule mod_ssl.c>
  <VirtualHost _default_:443>
-  DocumentRoot /var/www/gitorious/public
+  DocumentRoot /app/gitorious/public
   SSLEngine on
   SSLCertificateFile    /etc/ssl/certs/ssl-cert-snakeoil.pem
   SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key

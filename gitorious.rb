@@ -48,9 +48,14 @@ package :hoe do
   verify { has_gem 'hoe', '2.8.0' }
 end
 
+package :echoe do
+  gem :echoe
+  version '4.3.1'
+  verify { has_gem 'echoe', '4.3.1' }
+end
 
 package :gitorious_dependencies do
-  gems = [:chronic, :daemons, :echoe, :'ruby-yadis', :'ruby-openid',
+  gems = [:bundler, :chronic, :daemons, :'ruby-yadis', :'ruby-openid',
     :'mime-types', :'diff-lcs', :json, :'ruby-hmac', :stompserver, :mysql]
 
   gems.each do |gem_name|
@@ -59,6 +64,7 @@ package :gitorious_dependencies do
       #http_proxy 'http://proxy.intra.bt.com:8080'
     end
   end
+  requires :echoe
   requires :hoe
   requires :rdiscount
   requires :stomp
@@ -83,23 +89,23 @@ package :gitorious do
   requires :gitorious_dependencies
   gem 'mysql' do
     #http_proxy 'http://proxy.intra.bt.com:8080'
-    pre :install, 'bash -c "wget http://gitorious.org/gitorious/mainline/archive-tarball/master -O /tmp/gitorious.tar.gz"'
-    pre :install, 'tar xfz /tmp/gitorious.tar.gz -C /var/www'
-    pre :install, 'mv /var/www/gitorious-mainline /var/www/gitorious'
+    pre :install, 'bash -c "wget http://yousource.it.jyu.fi/yousource/yousource/archive-tarball/feat/private -O /tmp/gitorious.tar.gz"'
+    pre :install, 'tar xfz /tmp/gitorious.tar.gz -C /app'
+    pre :install, 'mv /app/yousource-yousource /app/gitorious'
     # this next line should work, but http git clone is flakey on gitorious, so using the above tar file instead
-    #pre :install, 'export http_proxy=http://proxy.intra.bt.com:8080 && git clone http://git.gitorious.org/gitorious/mainline.git /var/www/gitorious'
+    #pre :install, 'export http_proxy=http://proxy.intra.bt.com:8080 && git clone http://git.gitorious.org/gitorious/mainline.git /app/gitorious'
   end
 
   verify do
-    has_directory '/var/www/gitorious'
+    has_directory '/app/gitorious'
   end
 end
 
 package :gitorious_symlink do
   noop do
-    post :install, 'ln -s /var/www/gitorious/script/gitorious /usr/bin'
+    post :install, 'ln -s /app/gitorious/script/gitorious /usr/bin'
   end
-  verify {has_symlink '/usr/bin/gitorious','/var/www/gitorious/script/gitorious'}
+  verify {has_symlink '/usr/bin/gitorious','/app/gitorious/script/gitorious'}
 end
 
 package :stomp_initd do
@@ -201,9 +207,9 @@ end
 
 package :git_user do
   noop do
-    post :install, 'adduser --system --home /var/www/gitorious/ --no-create-home --group --shell /bin/bash git'
-    post :install, 'chown -R git:git /var/www/gitorious'
-    post :install, 'chmod g-w /var/www/gitorious'
+    post :install, 'adduser --system --home /app/gitorious/ --no-create-home --group --shell /bin/bash git'
+    post :install, 'chown -R git:git /app/gitorious'
+    post :install, 'chmod g-w /app/gitorious'
   end
 
   verify {file_contains '/etc/passwd', 'git'}
@@ -249,7 +255,7 @@ end
 
 package :logrotate do
   noop do
-    post :install, 'cp /var/www/gitorious//doc/templates/ubuntu/gitorious-logrotate /etc/logrotate.d/gitorious'
+    post :install, 'cp /app/gitorious/doc/templates/ubuntu/gitorious-logrotate /etc/logrotate.d/gitorious'
   end
   verify {has_file '/etc/logrotate.d/gitorious'}
 end

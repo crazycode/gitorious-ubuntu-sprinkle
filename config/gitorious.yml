@@ -4,7 +4,7 @@ production:
 
   # The path where git repositories are stored. The actual (bare) repositories resides
   # in repository_base_path/#{project.slug}/#{repository.name}.git/:
-  repository_base_path: "/var/www/gitorious/repositories"
+  repository_base_path: "/app/gitorious/repositories"
 
   # Stuff that's in the html <head>. custom stats javascript code etc
   extra_html_head_data:
@@ -41,7 +41,7 @@ production:
 
   # Where should we store generated tarballs?
   # (should be readable by webserver, since we tell it to send the file using X-Sendfile)
-  archive_cache_dir: "/var/www/gitorious/tarballs"
+  archive_cache_dir: "/app/gitorious/tarballs"
   # Which directory should we work in when we generate tarballs, before moving
   # them to the above dir?
   archive_work_dir: "/tmp/tarballs-work"

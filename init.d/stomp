@@ -11,7 +11,7 @@
 # Description:       Stomp
 ### END INIT INFO
 
-
+# check stompserver install dir. maybe at /var/lib/gems/1.8
 test -f /var/lib/gems/1.8/bin/stompserver || exit 0
 
 . /lib/lsb/init-functions
